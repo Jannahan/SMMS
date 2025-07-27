@@ -38,10 +38,10 @@ public class Main {
                         scanner.nextLine();
                     }
                 } else if (currentUser instanceof Student student) {
-                    handleStudentMenu(student, scanner, progressTracking, commManager, loginManager);
+                    handleStudentMenu(student, scanner, progressTracking, commManager, loginManager, db);
                     if (!scanner.hasNext()) currentUser = null;
                 } else if (currentUser instanceof Mentor mentor) {
-                    handleMentorMenu(mentor, scanner, commManager, loginManager);
+                    handleMentorMenu(mentor, scanner, commManager, loginManager, db);
                     if (!scanner.hasNext()) currentUser = null;
                 }
             }
@@ -174,7 +174,7 @@ public class Main {
 
     // Handle student menu options
     private static void handleStudentMenu(Student student, Scanner scanner, ProgressTracking progressTracking,
-                                          CommunicationManager commManager, LoginManager loginManager) throws SQLException {
+                                          CommunicationManager commManager, LoginManager loginManager, Database db) throws SQLException {
         while (true) {
             System.out.println("\n=== Student Menu ===");
             System.out.println("1. View Progress");
@@ -210,10 +210,10 @@ public class Main {
                         System.out.println(progressTracking.generateDetailedReport(student));
                         break;
                     case 4:
-                        sendMessage(scanner, student, commManager, loginManager, student.getAssignedMentor());
+                        sendMessage(scanner, student, commManager, loginManager, db, student.getAssignedMentor());
                         break;
                     case 5:
-                        sendEmergencyNotification(scanner, commManager, loginManager);
+                        sendEmergencyNotification(scanner, commManager, loginManager, db);
                         break;
                     default:
                         System.out.println("Invalid choice!");
@@ -227,7 +227,7 @@ public class Main {
 
     // Handle mentor menu options
     private static void handleMentorMenu(Mentor mentor, Scanner scanner, CommunicationManager commManager,
-                                         LoginManager loginManager) throws SQLException {
+                                         LoginManager loginManager, Database db) throws SQLException {
         while (true) {
             System.out.println("\n=== Mentor Menu ===");
             System.out.println("1. View Assigned Students");
@@ -258,7 +258,7 @@ public class Main {
                         sendMessageToStudent(scanner, mentor, commManager, loginManager);
                         break;
                     case 3:
-                        sendEmergencyNotification(scanner, commManager, loginManager);
+                        sendEmergencyNotification(scanner, commManager, loginManager, db);
                         break;
                     default:
                         System.out.println("Invalid choice!");
@@ -272,16 +272,27 @@ public class Main {
 
     // Send a message to a specific user
     private static void sendMessage(Scanner scanner, User from, CommunicationManager commManager,
-                                    LoginManager loginManager, User expectedRecipient) throws SQLException {
+                                    LoginManager loginManager, Database db, User expectedRecipient) throws SQLException {
         System.out.print("Recipient email: ");
         String email = scanner.nextLine();
-        User recipient = loginManager.authenticate(email, 0);
-        if (recipient != null && expectedRecipient != null && recipient.getUserId() == expectedRecipient.getUserId()) {
-            System.out.print("Message: ");
-            String message = scanner.nextLine();
-            commManager.sendMessage(from, recipient, message);
+        User recipient = db.getUserByEmail(email); // Use database method to find user by email
+        if (recipient != null) {
+            if (from instanceof Student && recipient instanceof Mentor) {
+                Student student = (Student) from;
+                Mentor mentor = (Mentor) recipient;
+                if (student.getAssignedMentor() != null && student.getAssignedMentor().getUserId() == mentor.getUserId()) {
+                    System.out.print("Message: ");
+                    String message = scanner.nextLine();
+                    commManager.sendMessage(from, recipient, message);
+                    System.out.println("Message sent successfully!");
+                } else {
+                    System.out.println("You can only message your assigned mentor!");
+                }
+            } else {
+                System.out.println("Invalid recipient type!");
+            }
         } else {
-            System.out.println("Recipient not found or not authorized!");
+            System.out.println("Recipient not found!");
         }
     }
 
@@ -302,10 +313,10 @@ public class Main {
 
     // Send an emergency notification
     private static void sendEmergencyNotification(Scanner scanner, CommunicationManager commManager,
-                                                  LoginManager loginManager) throws SQLException {
+                                                  LoginManager loginManager, Database db) throws SQLException {
         System.out.print("Recipient email: ");
         String email = scanner.nextLine();
-        User recipient = loginManager.authenticate(email, 0);
+        User recipient = db.getUserByEmail(email);
         if (recipient != null) {
             System.out.print("Emergency message: ");
             String message = scanner.nextLine();

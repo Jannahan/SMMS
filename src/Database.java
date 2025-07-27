@@ -114,7 +114,7 @@ public class Database {
     }
 
     // Retrieve a student by ID
-    public Student getStudent(int id) throws SQLException {
+    public Student getStudent(int id, boolean loadRelated) throws SQLException {
         String query = "SELECT u.id, u.email, u.password, s.name, s.interest, s.mentor_id " +
                 "FROM users u JOIN students s ON u.id = s.user_id WHERE u.id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -124,8 +124,8 @@ public class Database {
                     Student student = new Student(rs.getInt("id"), rs.getString("email"), rs.getInt("password"),
                             rs.getString("name"), rs.getString("interest"));
                     int mentorId = rs.getInt("mentor_id");
-                    if (!rs.wasNull()) {
-                        student.setAssignedMentor(getMentor(mentorId));
+                    if (loadRelated && !rs.wasNull()) {
+                        student.setAssignedMentor(getMentor(mentorId, false)); // Avoid recursive loading
                     }
                     return student;
                 }
@@ -135,7 +135,7 @@ public class Database {
     }
 
     // Retrieve a mentor by ID
-    public Mentor getMentor(int id) throws SQLException {
+    public Mentor getMentor(int id, boolean loadRelated) throws SQLException {
         String query = "SELECT u.id, u.email, u.password, m.name, m.expertise " +
                 "FROM users u JOIN mentors m ON u.id = m.user_id WHERE u.id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -144,14 +144,16 @@ public class Database {
                 if (rs.next()) {
                     Mentor mentor = new Mentor(rs.getInt("id"), rs.getString("email"), rs.getInt("password"),
                             rs.getString("name"), rs.getString("expertise"));
-                    String studentQuery = "SELECT user_id FROM students WHERE mentor_id = ?";
-                    try (PreparedStatement stmt2 = connection.prepareStatement(studentQuery)) {
-                        stmt2.setInt(1, id);
-                        try (ResultSet rs2 = stmt2.executeQuery()) {
-                            while (rs2.next()) {
-                                Student student = getStudent(rs2.getInt("user_id"));
-                                if (student != null) {
-                                    mentor.addStudent(student);
+                    if (loadRelated) {
+                        String studentQuery = "SELECT user_id FROM students WHERE mentor_id = ?";
+                        try (PreparedStatement stmt2 = connection.prepareStatement(studentQuery)) {
+                            stmt2.setInt(1, id);
+                            try (ResultSet rs2 = stmt2.executeQuery()) {
+                                while (rs2.next()) {
+                                    Student student = getStudent(rs2.getInt("user_id"), false); // Avoid recursive loading
+                                    if (student != null) {
+                                        mentor.addStudent(student);
+                                    }
                                 }
                             }
                         }
@@ -164,36 +166,51 @@ public class Database {
     }
 
     // Authenticate a user by email and password
-    public User authenticate(String email, int password) throws SQLException {
-        String query = "SELECT id, user_type FROM users WHERE email = ? AND password = ?";
+        public User authenticate(String email, int password) throws SQLException {
+            String query = "SELECT id, user_type FROM users WHERE email = ? AND password = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setString(1, email);
+                stmt.setInt(2, password);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        int id = rs.getInt("id");
+                        String type = rs.getString("user_type");
+                        return "student".equals(type) ? getStudent(id, false) : getMentor(id, false); // Initial load without related objects
+                    }
+                }
+            }
+            return null;
+        }
+
+    // Retrieve all mentors from the database
+        public List<Mentor> getAllMentors() throws SQLException {
+            List<Mentor> mentors = new ArrayList<>();
+            String query = "SELECT user_id FROM mentors";
+            try (PreparedStatement stmt = connection.prepareStatement(query);
+                 ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Mentor mentor = getMentor(rs.getInt("user_id"), false); // Initial load without related objects
+                    if (mentor != null) {
+                        mentors.add(mentor);
+                    }
+                }
+            }
+            return mentors;
+    }
+
+    public User getUserByEmail(String email) throws SQLException {
+        String query = "SELECT id, user_type FROM users WHERE email = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, email);
-            stmt.setInt(2, password);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     int id = rs.getInt("id");
                     String type = rs.getString("user_type");
-                    return "student".equals(type) ? getStudent(id) : getMentor(id);
+                    return "student".equals(type) ? getStudent(id, false) : getMentor(id, false);
                 }
             }
         }
         return null;
-    }
-
-    // Retrieve all mentors from the database
-    public List<Mentor> getAllMentors() throws SQLException {
-        List<Mentor> mentors = new ArrayList<>();
-        String query = "SELECT user_id FROM mentors";
-        try (PreparedStatement stmt = connection.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Mentor mentor = getMentor(rs.getInt("user_id"));
-                if (mentor != null) {
-                    mentors.add(mentor);
-                }
-            }
-        }
-        return mentors;
     }
 
     // Close the database connection
