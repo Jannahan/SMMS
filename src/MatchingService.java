@@ -26,6 +26,7 @@ public class MatchingService {
             stmt.setInt(2, student.getUserId());
             stmt.executeUpdate();
         }
-        return mentor;
+        // Reload mentor to ensure assignedStudents is up-to-date (optional but recommended)
+        return database.getMentor(mentor.getUserId(), true); // Load related students
     }
 }

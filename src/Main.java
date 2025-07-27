@@ -255,7 +255,7 @@ public class Main {
                         }
                         break;
                     case 2:
-                        sendMessageToStudent(scanner, mentor, commManager, loginManager);
+                        sendMessageToStudent(scanner, mentor, commManager, loginManager, db);
                         break;
                     case 3:
                         sendEmergencyNotification(scanner, commManager, loginManager, db);
@@ -298,16 +298,29 @@ public class Main {
 
     // Send a message to an assigned student
     private static void sendMessageToStudent(Scanner scanner, Mentor mentor, CommunicationManager commManager,
-                                             LoginManager loginManager) throws SQLException {
+                                             LoginManager loginManager, Database db) throws SQLException {
         System.out.print("Recipient email: ");
         String email = scanner.nextLine();
-        User recipient = loginManager.authenticate(email, 0);
-        if (recipient instanceof Student student && mentor.getAssignedStudents().contains(student)) {
-            System.out.print("Message: ");
-            String message = scanner.nextLine();
-            commManager.sendMessage(mentor, student, message);
+        User recipient = db.getUserByEmail(email);
+        if (recipient instanceof Student student) {
+            // Check if the student is assigned to this mentor by comparing userId
+            boolean isAssigned = false;
+            for (Student assignedStudent : mentor.getAssignedStudents()) {
+                if (assignedStudent.getUserId() == student.getUserId()) {
+                    isAssigned = true;
+                    break;
+                }
+            }
+            if (isAssigned) {
+                System.out.print("Message: ");
+                String message = scanner.nextLine();
+                commManager.sendMessage(mentor, student, message);
+                System.out.println("Message sent successfully!");
+            } else {
+                System.out.println("Recipient not an assigned student!");
+            }
         } else {
-            System.out.println("Recipient not found or not an assigned student!");
+            System.out.println("Recipient not found or not a student!");
         }
     }
 

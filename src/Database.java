@@ -135,6 +135,7 @@ public class Database {
     }
 
     // Retrieve a mentor by ID
+// Retrieve a mentor by ID with optional related object loading
     public Mentor getMentor(int id, boolean loadRelated) throws SQLException {
         String query = "SELECT u.id, u.email, u.password, m.name, m.expertise " +
                 "FROM users u JOIN mentors m ON u.id = m.user_id WHERE u.id = ?";
@@ -175,7 +176,7 @@ public class Database {
                     if (rs.next()) {
                         int id = rs.getInt("id");
                         String type = rs.getString("user_type");
-                        return "student".equals(type) ? getStudent(id, false) : getMentor(id, false); // Initial load without related objects
+                        return "student".equals(type) ? getStudent(id, true) : getMentor(id, true); // Initial load without related objects
                     }
                 }
             }
