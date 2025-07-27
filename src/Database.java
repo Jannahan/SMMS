@@ -190,7 +190,7 @@ public class Database {
             try (PreparedStatement stmt = connection.prepareStatement(query);
                  ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    Mentor mentor = getMentor(rs.getInt("user_id"), false); // Initial load without related objects
+                    Mentor mentor = getMentor(rs.getInt("user_id"), true); // Initial load without related objects
                     if (mentor != null) {
                         mentors.add(mentor);
                     }

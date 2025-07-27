@@ -24,7 +24,7 @@ public class Main {
                                 handleRegistration(scanner, loginManager, matchingService, db);
                                 break;
                             case 2: // Login
-                                currentUser = handleLogin(scanner, loginManager, matchingService);
+                                currentUser = handleLogin(scanner, loginManager, matchingService, db);
                                 break;
                             case 3: // Exit
                                 db.close();
@@ -134,7 +134,7 @@ public class Main {
     }
 
     // Handle user login
-    private static User handleLogin(Scanner scanner, LoginManager loginManager, MatchingService matchingService) throws SQLException {
+    private static User handleLogin(Scanner scanner, LoginManager loginManager, MatchingService matchingService, Database db) throws SQLException {
         while (true) {
             System.out.println("\n=== Login ===");
             System.out.print("Email: ");
@@ -152,7 +152,14 @@ public class Main {
                 if (user instanceof Student student && student.getAssignedMentor() == null) {
                     Mentor mentor = matchingService.matchStudentToMentor(student);
                     System.out.println(mentor != null ? "Assigned to mentor: " + mentor.getMentorName() : "No mentor assigned.");
+                } else if (user instanceof Mentor mentor) {
+                if (mentor.getAssignedStudents().isEmpty()) {
+                    System.out.println("No students assigned. Assigning unassigned students...");
+                    matchingService.assignUnassignedStudents(mentor);
+                    // Reload mentor to reflect new assignments
+                    user = db.getMentor(mentor.getUserId(), true); // Update the user object
                 }
+            }
                 return user;
             } else {
                 System.out.println("Invalid credentials! Enter 0 to go back to main menu, or try again.");
@@ -201,6 +208,8 @@ public class Main {
                         int progress = scanner.nextInt();
                         scanner.nextLine();
                         if (progress >= 0 && progress <= 100) {
+                            student.setProgress(progress);
+                            db.updateStudent(student);
                             progressTracking.updateProgress(student, progress);
                             System.out.println("Progress updated!");
                         } else {
