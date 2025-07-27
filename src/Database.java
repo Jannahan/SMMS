@@ -1,6 +1,5 @@
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 // Class to manage database operations for the student-mentor system
 public class Database {
@@ -10,13 +9,9 @@ public class Database {
     public Database() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/student_mentor_db";
         String user = "root";
-        String password = "Swix@7466"; // Replace with your actual password
-        try {
-            connection = DriverManager.getConnection(url, user, password);
-            createTables();
-        } catch (SQLException e) {
-            throw new SQLException("Failed to connect to database: " + e.getMessage());
-        }
+        String password = "Swix@7466";
+        connection = DriverManager.getConnection(url, user, password);
+        createTables();
     }
 
     // Create database tables if they do not exist
@@ -61,11 +56,6 @@ public class Database {
                 stmt.execute(query);
             }
         }
-    }
-
-    // Get the database connection
-    public Connection getConnection() {
-        return connection;
     }
 
     // Save a student to the database

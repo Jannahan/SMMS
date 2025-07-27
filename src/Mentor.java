@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 // Class representing a mentor, inheriting from User
 public class Mentor extends User {
