@@ -195,7 +195,7 @@ public class Main {
             try {
                 int choice = scanner.nextInt();
                 scanner.nextLine();
-                if (choice == 6) {
+                if (choice == 7) {
                     System.out.println("Logged out!");
                     return; // Returns to main menu by exiting the method
                 }
