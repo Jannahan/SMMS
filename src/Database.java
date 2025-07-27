@@ -199,6 +199,19 @@ public class Database {
             return mentors;
     }
 
+
+    // Update student in the database
+    public void updateStudent(Student s) throws SQLException {
+        String sql = "UPDATE students SET name = ?, interest = ?, progress_percentage = ? WHERE user_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, s.getStudentName());
+            stmt.setString(2, s.getInterest());
+            stmt.setInt(3, s.getProgress());
+            stmt.setInt(4, s.getUserId());
+            stmt.executeUpdate();
+        }
+    }
+
     public User getUserByEmail(String email) throws SQLException {
         String query = "SELECT id, user_type FROM users WHERE email = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {

@@ -179,10 +179,11 @@ public class Main {
             System.out.println("\n=== Student Menu ===");
             System.out.println("1. View Progress");
             System.out.println("2. Update Progress");
-            System.out.println("3. Generate Report");
-            System.out.println("4. Send Message");
-            System.out.println("5. Send Emergency Notification");
-            System.out.println("6. Logout");
+            System.out.println("3. Submit for Review");
+            System.out.println("4. Generate Report");
+            System.out.println("5. Send Message");
+            System.out.println("6. Send Emergency Notification");
+            System.out.println("7. Logout");
             System.out.print("Enter your choice: ");
             try {
                 int choice = scanner.nextInt();
@@ -206,13 +207,28 @@ public class Main {
                             System.out.println("Invalid progress value!");
                         }
                         break;
-                    case 3:
-                        System.out.println(progressTracking.generateDetailedReport(student));
+                    case 3: // Submit for Review
+                        if (student.getAssignedMentor() != null) {
+                            System.out.println("Submitting progress (" + student.getProgress() + "%) for review...");
+                            // Option 1: Update database with a pending review flag
+                            String sql = "INSERT INTO progress_updates (student_id, progress_percentage) VALUES (?, ?)";
+                            try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+                                stmt.setInt(1, student.getUserId());
+                                stmt.setInt(2, student.getProgress());
+                                stmt.executeUpdate();
+                            }
+                            System.out.println("Progress submitted for mentor review!");
+                        } else {
+                            System.out.println("No mentor assigned to submit progress for review!");
+                        }
                         break;
                     case 4:
-                        sendMessage(scanner, student, commManager, loginManager, db, student.getAssignedMentor());
+                        System.out.println(progressTracking.generateDetailedReport(student));
                         break;
                     case 5:
+                        sendMessage(scanner, student, commManager, loginManager, db, student.getAssignedMentor());
+                        break;
+                    case 6:
                         sendEmergencyNotification(scanner, commManager, loginManager, db);
                         break;
                     default:
@@ -231,19 +247,21 @@ public class Main {
         while (true) {
             System.out.println("\n=== Mentor Menu ===");
             System.out.println("1. View Assigned Students");
-            System.out.println("2. Send Message");
-            System.out.println("3. Send Emergency Notification");
-            System.out.println("4. Logout");
+            System.out.println("2. Review Progress");
+            System.out.println("3. Generate Report");
+            System.out.println("4. Send Message");
+            System.out.println("5. Send Emergency Notification");
+            System.out.println("6. Logout");
             System.out.print("Enter your choice: ");
             try {
                 int choice = scanner.nextInt();
                 scanner.nextLine();
-                if (choice == 4) {
+                if (choice == 6) {
                     System.out.println("Logged out!");
                     return; // Returns to main menu by exiting the method
                 }
                 switch (choice) {
-                    case 1:
+                    case 1: //view assigned students
                         List<Student> students = mentor.getAssignedStudents();
                         if (students.isEmpty()) {
                             System.out.println("No students assigned.");
@@ -254,10 +272,33 @@ public class Main {
                             }
                         }
                         break;
-                    case 2:
+                    case 2: // Review Progress Updates
+                        for (Student student : mentor.getAssignedStudents()) {
+                            System.out.println(student.getStudentName() + " submitted progress: " + student.getProgress() + "%");
+                            System.out.print("Approve? (1 for yes, 0 for no, enter new value): ");
+                            int approve = getValidChoice(scanner);
+                            if (approve == 1) {
+                                // Approve logic (e.g., update database)
+                                System.out.println("Progress approved!");
+                            } else if (approve >= 0 && approve <= 100) {
+                                student.setProgress(approve); // Assume setProgress method
+                                db.updateStudent(student); // Assume update method
+                                System.out.println("Progress updated to " + approve + "%!");
+                            } else {
+                                System.out.println("Invalid input!");
+                            }
+                        }
+                        break;
+                    case 3: // Generate Report
+                        for (Student student : mentor.getAssignedStudents()) {
+                            System.out.println("Report for " + student.getStudentName() + ": " + student.getProgress() + "%");
+                            // Add more report details (e.g., mentor notes)
+                        }
+                        break;
+                    case 4: // Send message
                         sendMessageToStudent(scanner, mentor, commManager, loginManager, db);
                         break;
-                    case 3:
+                    case 5: // send emergency notification
                         sendEmergencyNotification(scanner, commManager, loginManager, db);
                         break;
                     default:
