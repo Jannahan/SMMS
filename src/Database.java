@@ -10,7 +10,12 @@ public class Database {
         String url = "jdbc:mysql://localhost:3306/student_mentor_db";
         String user = "root";
         String password = "Swix@7466"; // Replace with your actual password
-        createTables();
+        try {
+            connection = DriverManager.getConnection(url, user, password);
+            createTables();
+        } catch (SQLException e) {
+            throw new SQLException("Failed to connect to database: " + e.getMessage());
+        }
     }
 
     // Create database tables if they do not exist

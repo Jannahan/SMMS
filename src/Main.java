@@ -1,7 +1,5 @@
-import java.sql.SQLException;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.sql.*;
+import java.util.*;
 
 // Main class to run the student-mentor system
 public class Main {
