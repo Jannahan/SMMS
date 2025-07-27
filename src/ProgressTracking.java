@@ -1,6 +1,4 @@
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 // Class to manage student progress tracking
 public class ProgressTracking {
@@ -17,12 +15,6 @@ public class ProgressTracking {
         try (PreparedStatement stmt = database.getConnection().prepareStatement(updateStudent)) {
             stmt.setInt(1, percentage);
             stmt.setInt(2, student.getUserId());
-            stmt.executeUpdate();
-        }
-        String insertLog = "INSERT INTO progress_updates (student_id, progress_percentage) VALUES (?, ?)";
-        try (PreparedStatement stmt = database.getConnection().prepareStatement(insertLog)) {
-            stmt.setInt(1, student.getUserId());
-            stmt.setInt(2, percentage);
             stmt.executeUpdate();
         }
     }

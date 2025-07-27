@@ -9,8 +9,7 @@ public class Database {
     public Database() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/student_mentor_db";
         String user = "root";
-        String password = "Swix@7466";
-        connection = DriverManager.getConnection(url, user, password);
+        String password = "Swix@7466"; // Replace with your actual password
         createTables();
     }
 
@@ -56,6 +55,11 @@ public class Database {
                 stmt.execute(query);
             }
         }
+    }
+
+    // Get the database connection
+    public Connection getConnection() {
+        return connection;
     }
 
     // Save a student to the database

@@ -1,4 +1,4 @@
-import java.sql.SQLException;
+import java.sql.*;
 
 // Class to handle user authentication and registration
 public class LoginManager {

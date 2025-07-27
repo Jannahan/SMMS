@@ -1,6 +1,5 @@
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 
 // Class to match students with mentors
 public class MatchingService {

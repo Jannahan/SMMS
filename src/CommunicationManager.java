@@ -1,6 +1,4 @@
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 
 // Class to manage communication between users
 public class CommunicationManager {
