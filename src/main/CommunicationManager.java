@@ -13,12 +13,27 @@ public class CommunicationManager {
 
     // Send a message from one user to another
     public void sendMessage(User from, User to, String message) throws SQLException {
+        if (from == null) {
+            throw new IllegalArgumentException("Sender cannot be null");
+        }
+        if (to == null) {
+            throw new IllegalArgumentException("Recipient cannot be null");
+        }
+        if (message == null || message.trim().isEmpty()) {
+            throw new IllegalArgumentException("Message cannot be null or empty");
+        }
         System.out.println("Message sent from " + from.getUserEmail() + " to " + to.getUserEmail() + ": " + message);
         logCommunication(from, to, message, "message");
     }
 
     // Send an emergency notification to a user
     public void sendEmergencyNotification(User to, String message) throws SQLException {
+        if (to == null) {
+            throw new IllegalArgumentException("Recipient cannot be null");
+        }
+        if (message == null || message.trim().isEmpty()) {
+            throw new IllegalArgumentException("Message cannot be null or empty");
+        }
         System.out.println("Emergency notification to " + to.getUserEmail() + ": " + message);
         logCommunication(null, to, message, "emergency");
     }

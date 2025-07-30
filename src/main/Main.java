@@ -62,7 +62,7 @@ public class Main {
     }
 
     // Get valid integer choice with error handling
-    private static int getValidChoice(Scanner scanner) {
+    public static int getValidChoice(Scanner scanner) {
         while (true) {
             try {
                 return scanner.nextInt();
@@ -172,12 +172,12 @@ public class Main {
     }
 
     // Validate email contains '@' and '.com'
-    private static boolean isValidEmail(String email) {
+    public static boolean isValidEmail(String email) {
         return email != null && email.contains("@") && email.contains(".com");
     }
 
     // Validate name/interest does not contain numbers
-    private static boolean isValidName(String text) {
+    public static boolean isValidName(String text) {
         return text != null && !text.matches(".*\\d.*");
     }
 

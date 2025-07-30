@@ -6,26 +6,28 @@ import main.Student;
 import main.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 public class LoginManagerTest {
 
-    private LoginManager loginManager;
+    @Mock
     private Database mockDb;
+
+    private LoginManager loginManager;
 
     @BeforeEach
     void setUp() {
-        // Initialize the mock before each test
-        mockDb = Mockito.mock(Database.class);
-        loginManager = new LoginManager(mockDb);
+        loginManager = new LoginManager(mockDb); // Mock injected automatically
     }
 
     @Test
     void testAuthenticateSuccess() throws Exception {
-        // Mock a successful authentication
-        User mockUser = Mockito.mock(User.class);
+        User mockUser = mock(User.class);
         when(mockDb.authenticate("test@example.com", 1234)).thenReturn(mockUser);
 
         User result = loginManager.authenticate("test@example.com", 1234);
@@ -36,7 +38,6 @@ public class LoginManagerTest {
 
     @Test
     void testAuthenticateFailure() throws Exception {
-        // Mock a failed authentication
         when(mockDb.authenticate("wrong@example.com", 9999)).thenReturn(null);
 
         User result = loginManager.authenticate("wrong@example.com", 9999);
@@ -46,7 +47,6 @@ public class LoginManagerTest {
 
     @Test
     void testRegisterStudent() throws Exception {
-        // Mock the database save operation
         Student student = new Student(0, "new@example.com", 1234, "NewStudent", "Science");
         doNothing().when(mockDb).saveStudent(student);
 
