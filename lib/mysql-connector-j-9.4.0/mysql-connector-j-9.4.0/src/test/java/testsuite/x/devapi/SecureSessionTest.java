@@ -429,7 +429,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
             // With default auth mechanism for secure connections (PLAIN).
 
             if (supportsMysqlNative) {
-                // *** User: mysqlnative; Auth: default.
+                // *** Main.User: mysqlnative; Auth: default.
                 props.setProperty(PropertyKey.USER.getKeyName(), "testAuthMechNative");
                 props.setProperty(PropertyKey.PASSWORD.getKeyName(), "mysqlnative");
 
@@ -441,7 +441,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
             }
 
             if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.3"))) {
-                // *** User: testAuthMechSha256; Auth: default.
+                // *** Main.User: testAuthMechSha256; Auth: default.
                 props.setProperty(PropertyKey.USER.getKeyName(), "testAuthMechSha256");
                 props.setProperty(PropertyKey.PASSWORD.getKeyName(), "sha256");
 
@@ -453,7 +453,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
             }
 
             if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.3"))) {
-                // *** User: testAuthMechCachingSha2; Auth: default.
+                // *** Main.User: testAuthMechCachingSha2; Auth: default.
                 props.setProperty(PropertyKey.USER.getKeyName(), "testAuthMechCachingSha2");
                 props.setProperty(PropertyKey.PASSWORD.getKeyName(), "cachingsha2");
 
@@ -467,7 +467,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
             // Forcing an auth mechanism.
 
             if (supportsMysqlNative) {
-                // *** User: testAuthMechNative; Auth: PLAIN.
+                // *** Main.User: testAuthMechNative; Auth: PLAIN.
                 props.setProperty(PropertyKey.USER.getKeyName(), "testAuthMechNative");
                 props.setProperty(PropertyKey.PASSWORD.getKeyName(), "mysqlnative");
                 props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "PLAIN");
@@ -478,7 +478,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
                 assertUser("testAuthMechNative", testSession);
                 testSession.close();
 
-                // *** User: testAuthMechNative; Auth: MYSQL41.
+                // *** Main.User: testAuthMechNative; Auth: MYSQL41.
                 props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "MYSQL41");
 
                 testSession = this.fact.getSession(props);
@@ -488,7 +488,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
                 testSession.close();
 
                 if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.4"))) { // SHA256_MEMORY support added in MySQL 8.0.4.
-                    // *** User: testAuthMechNative; Auth: SHA256_MEMORY.
+                    // *** Main.User: testAuthMechNative; Auth: SHA256_MEMORY.
                     props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "SHA256_MEMORY");
 
                     testSession = this.fact.getSession(props);
@@ -500,7 +500,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
             }
 
             if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.3"))) {
-                // *** User: testAuthMechSha256; Auth: PLAIN.
+                // *** Main.User: testAuthMechSha256; Auth: PLAIN.
                 props.setProperty(PropertyKey.USER.getKeyName(), "testAuthMechSha256");
                 props.setProperty(PropertyKey.PASSWORD.getKeyName(), "sha256");
                 props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "PLAIN");
@@ -511,7 +511,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
                 assertUser("testAuthMechSha256", testSession);
                 testSession.close();
 
-                // *** User: testAuthMechSha256; Auth: MYSQL41.
+                // *** Main.User: testAuthMechSha256; Auth: MYSQL41.
                 props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "MYSQL41");
                 if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.12"))) {
                     accessDeniedErrMsg = "ERROR 1045 \\(HY000\\) Access denied for user 'testAuthMechSha256'@.*";
@@ -520,7 +520,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
                 assertThrows(XProtocolError.class, accessDeniedErrMsg, () -> this.fact.getSession(props)); // Auth mech mismatch.
 
                 if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.4"))) { // SHA256_MEMORY support added in MySQL 8.0.4.
-                    // *** User: testAuthMechSha256; Auth: SHA256_MEMORY.
+                    // *** Main.User: testAuthMechSha256; Auth: SHA256_MEMORY.
                     props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "SHA256_MEMORY");
 
                     testSession = this.fact.getSession(props);
@@ -532,7 +532,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
             }
 
             if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.3"))) {
-                // *** User: testAuthMechCachingSha2; Auth: PLAIN.
+                // *** Main.User: testAuthMechCachingSha2; Auth: PLAIN.
                 props.setProperty(PropertyKey.USER.getKeyName(), "testAuthMechCachingSha2");
                 props.setProperty(PropertyKey.PASSWORD.getKeyName(), "cachingsha2");
                 props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "PLAIN");
@@ -543,7 +543,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
                 assertUser("testAuthMechCachingSha2", testSession);
                 testSession.close();
 
-                // *** User: testAuthMechCachingSha2; Auth: MYSQL41.
+                // *** Main.User: testAuthMechCachingSha2; Auth: MYSQL41.
                 props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "MYSQL41");
                 if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.12"))) {
                     accessDeniedErrMsg = "ERROR 1045 \\(HY000\\) Access denied for user 'testAuthMechCachingSha2'@.*";
@@ -552,7 +552,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
                 assertThrows(XProtocolError.class, accessDeniedErrMsg, () -> this.fact.getSession(props)); // Auth mech mismatch.
 
                 if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.4"))) { // SHA256_MEMORY support added in MySQL 8.0.4.
-                    // User: testAuthMechCachingSha2; Auth: SHA256_MEMORY.
+                    // Main.User: testAuthMechCachingSha2; Auth: SHA256_MEMORY.
                     props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "SHA256_MEMORY");
 
                     testSession = this.fact.getSession(props);
@@ -563,7 +563,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
                 }
             }
 
-            // *** User: external; Auth: EXTERNAL.
+            // *** Main.User: external; Auth: EXTERNAL.
             props.setProperty(PropertyKey.USER.getKeyName(), "external");
             props.setProperty(PropertyKey.PASSWORD.getKeyName(), "external");
             props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "EXTERNAL");
@@ -580,7 +580,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
             // With default auth mechanism for non-secure connections (MYSQL41|SHA2_MEMORY).
 
             if (supportsMysqlNative) {
-                // *** User: testAuthMechNative; Auth: default.
+                // *** Main.User: testAuthMechNative; Auth: default.
                 props.setProperty(PropertyKey.USER.getKeyName(), "testAuthMechNative");
                 props.setProperty(PropertyKey.PASSWORD.getKeyName(), "mysqlnative");
 
@@ -592,7 +592,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
             }
 
             if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.4"))) { // SHA256_PASSWORD requires secure connections in MySQL 8.0.3 and below.
-                // *** User: testAuthMechSha256; Auth: default.
+                // *** Main.User: testAuthMechSha256; Auth: default.
                 props.setProperty(PropertyKey.USER.getKeyName(), "testAuthMechSha256");
                 props.setProperty(PropertyKey.PASSWORD.getKeyName(), "sha256");
 
@@ -604,7 +604,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
             }
 
             if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.4"))) { // CACHING_SHA2_PASSWORD requires secure connections in MySQL 8.0.3 and below.
-                // *** User: testAuthMechCachingSha2; Auth: default.
+                // *** Main.User: testAuthMechCachingSha2; Auth: default.
                 props.setProperty(PropertyKey.USER.getKeyName(), "testAuthMechCachingSha2");
                 props.setProperty(PropertyKey.PASSWORD.getKeyName(), "cachingsha2");
 
@@ -618,14 +618,14 @@ public class SecureSessionTest extends DevApiBaseTestCase {
             // Forcing an auth mechanism.
 
             if (supportsMysqlNative) {
-                // *** User: testAuthMechNative; Auth: PLAIN.
+                // *** Main.User: testAuthMechNative; Auth: PLAIN.
                 props.setProperty(PropertyKey.USER.getKeyName(), "testAuthMechNative");
                 props.setProperty(PropertyKey.PASSWORD.getKeyName(), "mysqlnative");
                 props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "PLAIN");
 
                 assertThrows(XProtocolError.class, "PLAIN authentication is not allowed via unencrypted connection\\.", () -> this.fact.getSession(props));
 
-                // *** User: testAuthMechNative; Auth: MYSQL41.
+                // *** Main.User: testAuthMechNative; Auth: MYSQL41.
                 props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "MYSQL41");
 
                 testSession = this.fact.getSession(props);
@@ -635,7 +635,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
                 testSession.close();
 
                 if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.4"))) { // SHA256_MEMORY support added in MySQL 8.0.4.
-                    // *** User: testAuthMechNative; Auth: SHA256_MEMORY.
+                    // *** Main.User: testAuthMechNative; Auth: SHA256_MEMORY.
                     props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "SHA256_MEMORY");
 
                     testSession = this.fact.getSession(props);
@@ -647,14 +647,14 @@ public class SecureSessionTest extends DevApiBaseTestCase {
             }
 
             if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.3"))) {
-                // *** User: testAuthMechSha256; Auth: PLAIN.
+                // *** Main.User: testAuthMechSha256; Auth: PLAIN.
                 props.setProperty(PropertyKey.USER.getKeyName(), "testAuthMechSha256");
                 props.setProperty(PropertyKey.PASSWORD.getKeyName(), "sha256");
                 props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "PLAIN");
 
                 assertThrows(XProtocolError.class, "PLAIN authentication is not allowed via unencrypted connection\\.", () -> this.fact.getSession(props));
 
-                // *** User: testAuthMechSha256; Auth: MYSQL41.
+                // *** Main.User: testAuthMechSha256; Auth: MYSQL41.
                 props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "MYSQL41");
                 if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.12"))) {
                     accessDeniedErrMsg = "ERROR 1045 \\(HY000\\) Access denied for user 'testAuthMechSha256'@.*";
@@ -663,7 +663,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
                 assertThrows(XProtocolError.class, accessDeniedErrMsg, () -> this.fact.getSession(props)); // Auth mech mismatch.
 
                 if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.4"))) { // SHA256_MEMORY support added in MySQL 8.0.4.
-                    // *** User: testAuthMechSha256; Auth: SHA256_MEMORY.
+                    // *** Main.User: testAuthMechSha256; Auth: SHA256_MEMORY.
                     props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "SHA256_MEMORY");
 
                     testSession = this.fact.getSession(props);
@@ -675,14 +675,14 @@ public class SecureSessionTest extends DevApiBaseTestCase {
             }
 
             if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.3"))) {
-                // *** User: testAuthMechCachingSha2; Auth: PLAIN.
+                // *** Main.User: testAuthMechCachingSha2; Auth: PLAIN.
                 props.setProperty(PropertyKey.USER.getKeyName(), "testAuthMechCachingSha2");
                 props.setProperty(PropertyKey.PASSWORD.getKeyName(), "cachingsha2");
                 props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "PLAIN");
 
                 assertThrows(XProtocolError.class, "PLAIN authentication is not allowed via unencrypted connection\\.", () -> this.fact.getSession(props));
 
-                // *** User: testAuthMechCachingSha2; Auth: MYSQL41.
+                // *** Main.User: testAuthMechCachingSha2; Auth: MYSQL41.
                 props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "MYSQL41");
                 if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.12"))) {
                     accessDeniedErrMsg = "ERROR 1045 \\(HY000\\) Access denied for user 'testAuthMechCachingSha2'@.*";
@@ -691,7 +691,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
                 assertThrows(XProtocolError.class, accessDeniedErrMsg, () -> this.fact.getSession(props)); // Auth mech mismatch.
 
                 if (mysqlVersionMeetsMinimum(ServerVersion.parseVersion("8.0.4"))) { // SHA256_MEMORY support added in MySQL 8.0.4.
-                    // *** User: testAuthMechCachingSha2; Auth: SHA256_MEMORY.
+                    // *** Main.User: testAuthMechCachingSha2; Auth: SHA256_MEMORY.
                     props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "SHA256_MEMORY");
 
                     testSession = this.fact.getSession(props);
@@ -702,7 +702,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
                 }
             }
 
-            // *** User: external; Auth: EXTERNAL.
+            // *** Main.User: external; Auth: EXTERNAL.
             props.setProperty(PropertyKey.USER.getKeyName(), "external");
             props.setProperty(PropertyKey.PASSWORD.getKeyName(), "external");
             props.setProperty(PropertyKey.xdevapiAuth.getKeyName(), "EXTERNAL");

@@ -1,3 +1,5 @@
+package main;
+
 import java.util.*;
 
 // Class representing a mentor, inheriting from User

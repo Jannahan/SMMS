@@ -1,3 +1,5 @@
+package main;
+
 // Class representing a student, inheriting from User
 public class Student extends User {
     private String studentName;   // Name of the student

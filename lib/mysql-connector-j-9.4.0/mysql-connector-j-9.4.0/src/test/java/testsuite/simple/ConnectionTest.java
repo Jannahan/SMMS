@@ -437,7 +437,7 @@ public class ConnectionTest extends BaseTestCase {
         infile.deleteOnExit();
         String url = infile.toURI().toURL().toExternalForm();
         FileWriter output = new FileWriter(infile);
-        output.write("Test");
+        output.write("test");
         output.flush();
         output.close();
 
@@ -466,7 +466,7 @@ public class ConnectionTest extends BaseTestCase {
 
         this.rs = this.stmt.executeQuery("SELECT * FROM testLocalInfileWithUrl");
         assertTrue(this.rs.next());
-        assertTrue("Test".equals(this.rs.getString(1)));
+        assertTrue("test".equals(this.rs.getString(1)));
         int count = this.stmt.executeUpdate("DELETE FROM testLocalInfileWithUrl");
         assertTrue(count == 1);
 
@@ -486,7 +486,7 @@ public class ConnectionTest extends BaseTestCase {
         loadStmt.execute("LOAD DATA LOCAL INFILE '" + escapedPath.toString() + "' INTO TABLE testLocalInfileWithUrl" + charset);
         this.rs = this.stmt.executeQuery("SELECT * FROM testLocalInfileWithUrl");
         assertTrue(this.rs.next());
-        assertTrue("Test".equals(this.rs.getString(1)));
+        assertTrue("test".equals(this.rs.getString(1)));
 
         try {
             loadStmt.execute("LOAD DATA LOCAL INFILE 'foo:///' INTO TABLE testLocalInfileWithUrl" + charset);
@@ -506,7 +506,7 @@ public class ConnectionTest extends BaseTestCase {
         infile.deleteOnExit();
         //String url = infile.toURL().toExternalForm();
         FileWriter output = new FileWriter(infile);
-        output.write("Test");
+        output.write("test");
         output.flush();
         output.close();
 
@@ -804,7 +804,7 @@ public class ConnectionTest extends BaseTestCase {
         Connection con = getConnectionWithProps(props);
 
         this.rs = this.stmt.executeQuery("show databases like '" + databaseName + "'");
-        assertTrue(this.rs.next(), "Database " + databaseName + " is not found.");
+        assertTrue(this.rs.next(), "Main.Main.Database " + databaseName + " is not found.");
         assertEquals(databaseName, this.rs.getString(1));
 
         con.createStatement().executeUpdate("DROP DATABASE IF EXISTS " + databaseName);

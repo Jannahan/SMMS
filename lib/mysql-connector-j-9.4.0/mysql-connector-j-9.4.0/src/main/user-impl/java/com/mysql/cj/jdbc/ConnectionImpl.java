@@ -2170,7 +2170,7 @@ public class ConnectionImpl implements JdbcConnection, SessionEventListener, Ser
             checkClosed();
 
             if (db == null) {
-                throw SQLError.createSQLException("Database can not be null", MysqlErrorNumbers.SQLSTATE_CONNJ_ILLEGAL_ARGUMENT, getExceptionInterceptor());
+                throw SQLError.createSQLException("Main.Main.Database can not be null", MysqlErrorNumbers.SQLSTATE_CONNJ_ILLEGAL_ARGUMENT, getExceptionInterceptor());
             }
 
             if (this.connectionLifecycleInterceptors != null) {

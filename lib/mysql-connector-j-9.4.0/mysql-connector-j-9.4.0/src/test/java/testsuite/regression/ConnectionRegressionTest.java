@@ -2809,7 +2809,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
             int startConnCount = 0;
 
             while (this.rs.next()) {
-                if (this.rs.getString("User").equals(userParts[0]) && this.rs.getString("Host").startsWith(userParts[1])) {
+                if (this.rs.getString("Main.User").equals(userParts[0]) && this.rs.getString("Host").startsWith(userParts[1])) {
                     startConnCount++;
                 }
             }
@@ -2827,7 +2827,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
             int endConnCount = 0;
 
             while (this.rs.next()) {
-                if (this.rs.getString("User").equals(userParts[0]) && this.rs.getString("Host").startsWith(userParts[1])) {
+                if (this.rs.getString("Main.User").equals(userParts[0]) && this.rs.getString("Host").startsWith(userParts[1])) {
                     endConnCount++;
                 }
             }
@@ -3034,7 +3034,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
             Connection con = getConnectionWithProps(props);
 
             this.rs = this.stmt.executeQuery("show databases like '" + databaseName + "'");
-            assertTrue(this.rs.next(), "Database " + databaseName + " is not found.");
+            assertTrue(this.rs.next(), "Main.Main.Database " + databaseName + " is not found.");
             assertEquals(databaseName, this.rs.getString(1));
 
             ((com.mysql.cj.jdbc.JdbcConnection) con).changeUser(props.getProperty(PropertyKey.USER.getKeyName()),
@@ -3239,7 +3239,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
             createUser("'wl5851user1prx'@'%'", "IDENTIFIED BY 'foo'");
             this.stmt.executeUpdate("GRANT PROXY ON 'wl5851user1prx'@'%' TO 'wl5851user1'@'%'");
             this.stmt.executeUpdate("DELETE FROM mysql.db WHERE user='wl5851user1prx'");
-            this.stmt.executeUpdate("INSERT INTO mysql.db (Host, Db, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, "
+            this.stmt.executeUpdate("INSERT INTO mysql.db (Host, Db, Main.User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, "
                     + "Drop_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Create_tmp_table_priv, Lock_tables_priv, "
                     + "Create_view_priv,Show_view_priv, Create_routine_priv, Alter_routine_priv, Execute_priv, Event_priv, Trigger_priv) VALUES ('%', '"
                     + dbname + "', 'wl5851user1prx', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'N', 'N')");
@@ -3293,7 +3293,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
 
             createUser("'wl5851user2'@'%'", "IDENTIFIED WITH two_questions AS 'two_questions_password'");
             this.stmt.executeUpdate("DELETE FROM mysql.db WHERE user='wl5851user2'");
-            this.stmt.executeUpdate("INSERT INTO mysql.db (Host, Db, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, "
+            this.stmt.executeUpdate("INSERT INTO mysql.db (Host, Db, Main.User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, "
                     + "Drop_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Create_tmp_table_priv, Lock_tables_priv, Create_view_priv, "
                     + "Show_view_priv, Create_routine_priv, Alter_routine_priv, Execute_priv, Event_priv, Trigger_priv) VALUES ('%', '" + dbname
                     + "', 'wl5851user2', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'N', 'N')");
@@ -3346,7 +3346,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
 
             createUser("'wl5851user3'@'%'", "IDENTIFIED WITH three_attempts AS 'three_attempts_password'");
             this.stmt.executeUpdate("DELETE FROM mysql.db WHERE user='wl5851user3'");
-            this.stmt.executeUpdate("INSERT INTO mysql.db (Host, Db, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, "
+            this.stmt.executeUpdate("INSERT INTO mysql.db (Host, Db, Main.User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, "
                     + "Drop_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Create_tmp_table_priv, Lock_tables_priv, Create_view_priv, "
                     + "Show_view_priv, Create_routine_priv, Alter_routine_priv, Execute_priv, Event_priv, Trigger_priv) VALUES ('%', '" + dbname
                     + "', 'wl5851user3', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'N', 'N')");
@@ -3654,7 +3654,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
 
             createUser("'wl5735user'@'%'", "identified WITH cleartext_plugin_server AS ''");
             this.stmt.executeUpdate("DELETE FROM mysql.db WHERE user='wl5735user'");
-            this.stmt.executeUpdate("INSERT INTO mysql.db (Host, Db, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, "
+            this.stmt.executeUpdate("INSERT INTO mysql.db (Host, Db, Main.User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, "
                     + "Drop_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Create_tmp_table_priv, Lock_tables_priv, Create_view_priv, "
                     + "Show_view_priv, Create_routine_priv, Alter_routine_priv, Execute_priv, Event_priv, Trigger_priv) VALUES ('%', '" + dbname
                     + "', 'wl5735user', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'N', 'N')");
@@ -7053,7 +7053,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
             this.stmt.execute("GRANT ALL ON *.* TO 'bug75670user_sha'@'%'");
 
             System.out.println();
-            System.out.printf("%-25s : %-18s : %-25s : %-25s : %s%n", "DefAuthPlugin", "AllowPubKeyRet", "User", "Passwd", "Test result");
+            System.out.printf("%-25s : %-18s : %-25s : %-25s : %s%n", "DefAuthPlugin", "AllowPubKeyRet", "Main.User", "Passwd", "Test result");
             System.out.println(
                     "----------------------------------------------------------------------------------------------------" + "------------------------------");
 
@@ -10494,7 +10494,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
             ((JdbcConnection) c2).changeUser("Bug25642226u1", pwd);
             this.rs = s2.executeQuery("select database()");
             this.rs.next();
-            System.out.println("2. Database after sha256 changeUser [" + this.rs.getString(1) + "]");
+            System.out.println("2. Main.Main.Database after sha256 changeUser [" + this.rs.getString(1) + "]");
             assertEquals(origDb, this.rs.getString(1)); // was returning null for database name
             this.rs = s2.executeQuery("show tables"); // was failing with exception
 
@@ -10511,7 +10511,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
                 ((JdbcConnection) c2).changeUser("Bug25642226u2", pwd);
                 this.rs = s2.executeQuery("select database()");
                 this.rs.next();
-                System.out.println("3. Database after sha2 changeUser [" + this.rs.getString(1) + "]");
+                System.out.println("3. Main.Main.Database after sha2 changeUser [" + this.rs.getString(1) + "]");
                 assertEquals(origDb, this.rs.getString(1)); // was returning null for database name
                 this.rs = s2.executeQuery("show tables"); // was failing with exception
             }
@@ -11564,7 +11564,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
             Connection con = getConnectionWithProps(props);
 
             this.rs = this.stmt.executeQuery("SHOW DATABASES LIKE '" + databaseName + "'");
-            assertTrue(this.rs.next(), "Database " + databaseName + " was not found.");
+            assertTrue(this.rs.next(), "Main.Main.Database " + databaseName + " was not found.");
             assertEquals(databaseName, this.rs.getString(1));
 
             con.close();

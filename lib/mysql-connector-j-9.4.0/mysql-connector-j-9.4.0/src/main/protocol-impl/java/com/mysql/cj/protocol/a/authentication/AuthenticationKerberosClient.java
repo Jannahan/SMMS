@@ -175,8 +175,8 @@ public class AuthenticationKerberosClient implements AuthenticationPlugin<Native
                 // Protocol::AuthSwitchRequest plugin data contains:
                 //   int<2> SPN string length
                 //   string<VAR> SPN string
-                //   int<2> User Principal Name realm string length
-                //   string<VAR> User Principal Name realm string
+                //   int<2> Main.User Principal Name realm string length
+                //   string<VAR> Main.User Principal Name realm string
                 int servicePrincipalNameLength = (int) fromServer.readInteger(IntegerDataType.INT2);
                 String servicePrincipalName = fromServer.readString(StringLengthDataType.STRING_VAR, "ASCII", servicePrincipalNameLength);
                 // A typical Kerberos V5 principal has the structure "primary/instance@REALM".

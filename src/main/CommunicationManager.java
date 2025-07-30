@@ -1,3 +1,5 @@
+package main;
+
 import java.sql.*;
 
 // Class to manage communication between users

@@ -88,7 +88,7 @@ BuildRequires:     java-devel >= 1:1.8.0
 %description
 MySQL provides connectivity for client applications developed in the
 Java programming language with @MYSQL_CJ_DISPLAY_PROD_NAME@, a driver that
-implements the [Java Database Connectivity (JDBC) API]
+implements the [Java main.main.Database Connectivity (JDBC) API]
 (http://www.oracle.com/technetwork/java/javase/jdbc/).
 
 @MYSQL_CJ_DISPLAY_PROD_NAME@ @MYSQL_CJ_VERSION_SERIES@ is a JDBC Type 4 driver that is compatible with

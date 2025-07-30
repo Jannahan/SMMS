@@ -1843,7 +1843,7 @@ public class StatementRegressionTest extends BaseTestCase {
             this.pstmt = this.conn.prepareStatement("INSERT INTO testBug8181(col1,col2) VALUES(?,?)");
 
             for (int i = 0; i < 20; i++) {
-                this.pstmt.setString(1, "Test " + i);
+                this.pstmt.setString(1, "test " + i);
                 this.pstmt.setInt(2, i);
                 this.pstmt.addBatch();
             }
@@ -6321,7 +6321,7 @@ public class StatementRegressionTest extends BaseTestCase {
                 // when executed in the following sequence, each one of these queries take approximately 1 sec.
                 final String[] slowQueries = { "INSERT INTO testWL4897 VALUES (SLEEP(0.5) + 1, 'MySQL'), (SLEEP(0.5) + 2, 'Connector/J')",
                         "SELECT * FROM testWL4897 WHERE f1 + SLEEP(0.5) = f1",
-                        "REPLACE INTO testWL4897 VALUES (SLEEP(0.33) + 2, 'Database'), (SLEEP(0.33) + 3, 'Connector'), (SLEEP(0.33) + 4, 'Java')",
+                        "REPLACE INTO testWL4897 VALUES (SLEEP(0.33) + 2, 'Main.Main.Database'), (SLEEP(0.33) + 3, 'Connector'), (SLEEP(0.33) + 4, 'Java')",
                         "UPDATE testWL4897 SET f1 = f1 * 10 + SLEEP(0.25)", "DELETE FROM testWL4897 WHERE f1 + SLEEP(0.25) = f1" };
 
                 for (String query : slowQueries) {

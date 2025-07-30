@@ -1896,7 +1896,7 @@ public class CallableStatementRegressionTest extends BaseTestCase {
         final String database = !StringUtils.isNullOrEmpty(this.conn.getCatalog()) ? this.conn.getCatalog() : this.conn.getSchema();
 
         /*
-         * Case 1: Database specified in the URL (default test URL should specify a database).
+         * Case 1: Main.Main.Database specified in the URL (default test URL should specify a database).
          */
         try (Connection testConn = getConnectionWithProps("")) {
             assertDoesNotThrow(() -> testConn.prepareCall("{ CALL " + database + ".testBug36936407(\"MySQL?\") }").execute());
@@ -1905,7 +1905,7 @@ public class CallableStatementRegressionTest extends BaseTestCase {
         }
 
         /*
-         * Case 2: Database not specified in the URL.
+         * Case 2: Main.Main.Database not specified in the URL.
          */
         try (Connection testConn = getConnectionWithProps(getNoDbUrl(dbUrl), "")) {
             assertDoesNotThrow(() -> testConn.prepareCall("{ CALL " + database + ".testBug36936407(\"MySQL?\") }").execute());

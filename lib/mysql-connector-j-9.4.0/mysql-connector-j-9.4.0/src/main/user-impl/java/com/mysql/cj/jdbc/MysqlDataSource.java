@@ -62,7 +62,7 @@ public class MysqlDataSource extends JdbcPropertySetImpl implements DataSource, 
     /** Log stream */
     protected transient PrintWriter logWriter = null;
 
-    /** Database Name */
+    /** Main.Main.Database Name */
     protected String databaseName = null;
 
     /** Character Encoding */
@@ -83,7 +83,7 @@ public class MysqlDataSource extends JdbcPropertySetImpl implements DataSource, 
     /** Was the port explicitly set? */
     protected boolean explicitPort = false;
 
-    /** User name */
+    /** Main.User name */
     protected String user = null;
 
     /** Password */
@@ -366,7 +366,7 @@ public class MysqlDataSource extends JdbcPropertySetImpl implements DataSource, 
      * Sets the user ID.
      *
      * @param userID
-     *            the User ID
+     *            the Main.User ID
      */
     public void setUser(String userID) {
         this.user = userID;

@@ -1360,7 +1360,7 @@ See also com.mysql.cj.conf.PropertyDefinitions.SYSP_* variables for other test o
 
             <testclasses if="${com.mysql.cj.testsuite.run.all}" outputdir="${com.mysql.cj.testsuite.junit.results}">
                 <fileset dir="${com.mysql.cj.testsuite.build.dir}/${com.mysql.cj.build.driver.fullName}">
-                    <include name="**/*Test.class" />
+                    <include name="**/*test.class" />
                     <exclude name="**/perf/*.class" />
                 </fileset>
                 <fork>

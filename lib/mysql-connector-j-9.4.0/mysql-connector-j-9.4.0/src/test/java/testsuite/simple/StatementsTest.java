@@ -4044,9 +4044,9 @@ public class StatementsTest extends BaseTestCase {
                 "XA RECOVER",
                 // Prepared Statements:
                 "EXECUTE rsProdQueryPS",
-                // Database Administration Statements/Table Maintenance Statements:
+                // Main.Main.Database Administration Statements/Table Maintenance Statements:
                 "ANALYZE TABLE rsProdQuery", "CHECK TABLE rsProdQuery", "CHECKSUM TABLE rsProdQuery", "OPTIMIZE TABLE rsProdQuery", "REPAIR TABLE rsProdQuery",
-                // Database Administration Statements/SHOW Statements:
+                // Main.Main.Database Administration Statements/SHOW Statements:
                 "SHOW CREATE TABLE rsProdQuery",
                 // Utility Statements:
                 "DESC rsProdQuery", "DESCRIBE rsProdQuery", "EXPLAIN rsProdQuery", "HELP 'SELECT'" };
@@ -4077,14 +4077,14 @@ public class StatementsTest extends BaseTestCase {
                 "PREPARE rsProdQueryPS FROM 'TABLE rsProdQuery'", "DEALLOCATE PREPARE rsProdQueryPS",
                 // Compound Statement Syntax/Condition Handling:
                 "SIGNAL SQLSTATE '01000'", "RESIGNAL", "GET DIAGNOSTICS @n = NUMBER",
-                // Database Administration Statements/Account Management Statements:
+                // Main.Main.Database Administration Statements/Account Management Statements:
                 "CREATE USER rsProdQueryUser", "ALTER USER rsProdQueryUser", "RENAME USER rsProdQueryUser to rsProdQueryUserNew",
                 "GRANT SELECT ON rsProdQueryDb.* TO rsProdQueryUser", "REVOKE ALL ON *.* FROM rsProdQueryUser", "DROP USER rsProdQuery",
-                // Database Administration Statements/Component, Plugin, and Loadable Function Statements:
+                // Main.Main.Database Administration Statements/Component, Plugin, and Loadable Function Statements:
                 "INSTALL COMPONENT 'rsProdQuery'", "UNINSTALL COMPONENT 'rsProdQuery'",
-                // Database Administration Statements/CLONE Statement & SET Statements:
+                // Main.Main.Database Administration Statements/CLONE Statement & SET Statements:
                 "CLONE LOCAL DATA DIRECTORY '/tmp'", "SET @rsProdQuery = 'rsProdQuery'",
-                // Database Administration Statements/Other Administrative Statements:
+                // Main.Main.Database Administration Statements/Other Administrative Statements:
                 "BINLOG 'rsProdQuery'", "CACHE INDEX rsProdQueryIdx IN rsProdQueryCache", "FLUSH STATUS", "KILL 0", "RESTART", "SHUTDOWN",
                 //  Utility Statements
                 "USE rsProdQueryDb" };
@@ -4125,11 +4125,11 @@ public class StatementsTest extends BaseTestCase {
                 "PREPARE roSafeTestPS FROM 'TABLE roSafeTest'", "EXECUTE roSafeTestPS", "DEALLOCATE PREPARE roSafeTestPS",
                 // Compound Statement Syntax/Condition Handling:
                 "SIGNAL SQLSTATE '01000'", "RESIGNAL", "GET DIAGNOSTICS @n = NUMBER",
-                // Database Administration Statements/Table Maintenance Statements:
+                // Main.Main.Database Administration Statements/Table Maintenance Statements:
                 "ANALYZE TABLE roSafeTest", "CHECK TABLE roSafeTest", "CHECKSUM TABLE roSafeTest",
-                // Database Administration Statements/CLONE Statement, SET & SHOW Statements:
+                // Main.Main.Database Administration Statements/CLONE Statement, SET & SHOW Statements:
                 "CLONE LOCAL DATA DIRECTORY '/tmp'", "SET @roSafeTest = 'roSafeTest'", "SHOW CREATE TABLE roSafeTest",
-                // Database Administration Statements/Other Administrative Statements:
+                // Main.Main.Database Administration Statements/Other Administrative Statements:
                 "BINLOG 'roSafeTest'", "CACHE INDEX roSafeTestIdx IN roSafeTestCache", "FLUSH STATUS", "KILL 0",
                 // "RESTART", it's safe but can't be executed in this test
                 // "SHUTDOWN", it's safe but can't be executed in this test
@@ -4152,12 +4152,12 @@ public class StatementsTest extends BaseTestCase {
                 "WITH cte1 AS (TABLE roSafeTest) UPDATE roSafeTest SET c = c + 1", "WITH cte1 AS (TABLE roSafeTest) DELETE FROM roSafeTest",
                 // Replication Statements:
                 "CHANGE REPLICATION SOURCE TO SOURCE_DELAY=0", "RESET REPLICA",
-                // Database Administration Statements/Account Management Statements:
+                // Main.Main.Database Administration Statements/Account Management Statements:
                 "CREATE USER roSafeTestUser", "ALTER USER roSafeTestUser", "RENAME USER roSafeTestUser to roSafeTestUserNew",
                 "GRANT SELECT ON roSafeTestDb.* TO roSafeTestUser", "REVOKE ALL ON *.* FROM roSafeTestUser", "DROP USER roSafeTest",
-                // Database Administration Statements/Table Maintenance Statements:
+                // Main.Main.Database Administration Statements/Table Maintenance Statements:
                 "OPTIMIZE TABLE roSafeTest", "REPAIR TABLE roSafeTest",
-                // Database Administration Statements/Component, Plugin, and Loadable Function Statements:
+                // Main.Main.Database Administration Statements/Component, Plugin, and Loadable Function Statements:
                 "INSTALL COMPONENT 'roSafeTest'", "UNINSTALL COMPONENT 'roSafeTest'", };
         for (String query : notOkQueries) {
             assertThrows("Query: " + query, SQLException.class, "Connection is read-only\\. Queries leading to data modification are not allowed\\.", () -> {

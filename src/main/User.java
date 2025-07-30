@@ -1,3 +1,5 @@
+package main;
+
 // Abstract class representing a user in the system
 public abstract class User {
     private int userId;       // Unique identifier for the user

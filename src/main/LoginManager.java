@@ -1,3 +1,5 @@
+package main;
+
 import java.sql.*;
 
 // Class to handle user authentication and registration
