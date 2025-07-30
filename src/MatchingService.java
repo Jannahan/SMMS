@@ -10,7 +10,7 @@ public class MatchingService {
         this.database = database;
     }
 
-    // Match a student to a mentor (simple implementation: picks first available mentor)
+    // Match a student to a mentor (picks first available mentor).
     public Mentor matchStudentToMentor(Student student) throws SQLException {
         List<Mentor> mentors = database.getAllMentors();
         if (mentors.isEmpty()) {
@@ -19,7 +19,7 @@ public class MatchingService {
         }
 
         // Find mentor with the fewest students or use first if no preference
-        Mentor selectedMentor = mentors.get(0);
+        Mentor selectedMentor = mentors.getFirst();
         int minStudents = selectedMentor.getAssignedStudents().size();
         for (Mentor mentor : mentors) {
             int studentCount = mentor.getAssignedStudents().size();

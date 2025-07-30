@@ -4,12 +4,12 @@ import java.sql.*;
 public class ProgressTracking {
     private Database database;
 
-    // Constructor to initialize with a database instance
+    // Constructor to initialize a new Progress Tracking with a database instance
     public ProgressTracking(Database database) {
         this.database = database;
     }
 
-    // Update a student's progress percentage
+    // Update a student's progress percentage in the database
     public void updateProgress(Student student, int percentage) throws SQLException {
         String updateStudent = "UPDATE students SET progress_percentage = ? WHERE user_id = ?";
         try (PreparedStatement stmt = database.getConnection().prepareStatement(updateStudent)) {
@@ -35,12 +35,11 @@ public class ProgressTracking {
 
     // Generate a detailed report for a student
     public String generateDetailedReport(Student student) throws SQLException {
-        StringBuilder report = new StringBuilder("Student Report:\n");
-        report.append("Name: ").append(student.getStudentName()).append("\n");
-        report.append("Progress: ").append(viewProgress(student)).append("%\n");
-        report.append("Interest: ").append(student.getInterest()).append("\n");
-        report.append("Mentor: ").append(student.getAssignedMentor() != null ?
-                student.getAssignedMentor().getMentorName() : "None").append("\n");
-        return report.toString();
+        return "Student Report:\n" + "Name: " + student.getStudentName() + "\n" +
+                "Progress: " + viewProgress(student) + "%\n" +
+                "Interest: " + student.getInterest() + "\n" +
+                "Mentor: " + (student.getAssignedMentor() != null ?
+                student.getAssignedMentor().getMentorName() : "None") +
+                "\n";
     }
 }

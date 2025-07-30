@@ -235,7 +235,7 @@ public class Main {
                         System.out.println(progressTracking.generateDetailedReport(student));
                         break;
                     case 5:
-                        sendMessage(scanner, student, commManager, loginManager, db, student.getAssignedMentor());
+                        sendMessage(scanner, student, commManager, db);
                         break;
                     case 6:
                         sendEmergencyNotification(scanner, commManager, loginManager, db);
@@ -305,7 +305,7 @@ public class Main {
                         }
                         break;
                     case 4: // Send message
-                        sendMessageToStudent(scanner, mentor, commManager, loginManager, db);
+                        sendMessageToStudent(scanner, mentor, commManager, db);
                         break;
                     case 5: // send emergency notification
                         sendEmergencyNotification(scanner, commManager, loginManager, db);
@@ -322,14 +322,12 @@ public class Main {
 
     // Send a message to a specific user
     private static void sendMessage(Scanner scanner, User from, CommunicationManager commManager,
-                                    LoginManager loginManager, Database db, User expectedRecipient) throws SQLException {
+                                    Database db) throws SQLException {
         System.out.print("Recipient email: ");
         String email = scanner.nextLine();
         User recipient = db.getUserByEmail(email); // Use database method to find user by email
         if (recipient != null) {
-            if (from instanceof Student && recipient instanceof Mentor) {
-                Student student = (Student) from;
-                Mentor mentor = (Mentor) recipient;
+            if (from instanceof Student student && recipient instanceof Mentor mentor) {
                 if (student.getAssignedMentor() != null && student.getAssignedMentor().getUserId() == mentor.getUserId()) {
                     System.out.print("Message: ");
                     String message = scanner.nextLine();
@@ -348,7 +346,7 @@ public class Main {
 
     // Send a message to an assigned student
     private static void sendMessageToStudent(Scanner scanner, Mentor mentor, CommunicationManager commManager,
-                                             LoginManager loginManager, Database db) throws SQLException {
+                                             Database db) throws SQLException {
         System.out.print("Recipient email: ");
         String email = scanner.nextLine();
         User recipient = db.getUserByEmail(email);

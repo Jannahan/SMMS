@@ -1,10 +1,10 @@
-// Abstract base class representing a user in the system
+// Abstract class representing a user in the system
 public abstract class User {
     private int userId;       // Unique identifier for the user
     private String userEmail; // User's email address
-    private int userPassword; // User's password (Note: Should be hashed in a real system)
+    private int userPassword; // User's password
 
-    // Constructor to initialize user details
+    // Constructor a new User with the given details
     public User(int id, String email, int password) {
         this.userId = id;
         this.userEmail = email;

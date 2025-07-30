@@ -6,7 +6,7 @@ public class Mentor extends User {
     private String expertise;     // Mentor's area of expertise
     private List<Student> assignedStudents; // List of students assigned to this mentor
 
-    // Constructor to initialize mentor details
+    // Constructor to initialize a new mentor details
     public Mentor(int id, String email, int password, String mentorName, String expertise) {
         super(id, email, password);
         this.mentorName = mentorName;
