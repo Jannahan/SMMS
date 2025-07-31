@@ -7,11 +7,11 @@ import java.util.*;
 public class Database {
     private Connection connection; // Database connection instance
 
-    // Constructor to establish database connection and create tables
+    // Constructor to establish database connection.
     public Database() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/student_mentor_db";
         String user = "root";
-        String password = "Swix@7466"; // Replace with your actual password
+        String password = "Swix@7466";
         try {
             connection = DriverManager.getConnection(url, user, password);
             createTables();
@@ -20,7 +20,7 @@ public class Database {
         }
     }
 
-    // Create database tables if they do not exist
+    // Creating database tables
     private void createTables() throws SQLException {
         String[] queries = {
                 "CREATE TABLE IF NOT EXISTS users (" +
@@ -137,7 +137,6 @@ public class Database {
     }
 
     // Retrieve a mentor by ID
-// Retrieve a mentor by ID with optional related object loading
     public Mentor getMentor(int id, boolean loadRelated) throws SQLException {
         String query = "SELECT u.id, u.email, u.password, m.name, m.expertise " +
                 "FROM users u JOIN mentors m ON u.id = m.user_id WHERE u.id = ?";

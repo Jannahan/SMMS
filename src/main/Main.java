@@ -221,7 +221,6 @@ public class Main {
                     case 3: // Submit for Review
                         if (student.getAssignedMentor() != null) {
                             System.out.println("Submitting progress (" + student.getProgress() + "%) for review...");
-                            // Option 1: Update database with a pending review flag
                             String sql = "INSERT INTO progress_updates (student_id, progress_percentage) VALUES (?, ?)";
                             try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
                                 stmt.setInt(1, student.getUserId());
@@ -289,7 +288,6 @@ public class Main {
                             System.out.print("Approve? (1 for yes, 0 for no, enter new value): ");
                             int approve = getValidChoice(scanner);
                             if (approve == 1) {
-                                // Approve logic (e.g., update database)
                                 System.out.println("Progress approved!");
                             } else if (approve >= 0 && approve <= 100) {
                                 student.setProgress(approve); // Assume setProgress method
@@ -303,7 +301,6 @@ public class Main {
                     case 3: // Generate Report
                         for (Student student : mentor.getAssignedStudents()) {
                             System.out.println("Report for " + student.getStudentName() + ": " + student.getProgress() + "%");
-                            // Add more report details (e.g., mentor notes)
                         }
                         break;
                     case 4: // Send message
